@@ -1,0 +1,31 @@
+name: SE Primer — Tests
+on:
+  push:
+    branches: [se-primer-yzm301]
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Tutor 20 scenario eval
+        run: node tests/tutor-eval.mjs
+      - name: Cypress E2E
+        uses: cypress-io/github-action@v6
+        with:
+          start: python3 -m http.server 5173
+          wait-on: 'http://localhost:5173'
+      - name: Upload Cypress videos/screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: se-primer-cypress-evidence
+          path: |
+            cypress/videos
+            cypress/screenshots
+          if-no-files-found: ignore

@@ -1,33 +1,64 @@
-# SE Primer — YZM301
+# SE Primer · YZM301 — Yazılım Test ve Gerçekleme
 
-Mobil öncelikli, üç karar aşamalı yazılım mühendisliği kriz simülasyonu.
+**Etkileşimli mühendislik karar simülasyonu.** Sağlık randevu sistemi arızasında üç karar (mimari, test, KVKK), iki son, rol/seviye/hedef uyarlaması, her karardan sonra teknik açıklama ve cevap vermeyen Sokratik tutor.
 
-## Kurulum
-Node.js 18+ gerekir.
+> **Durum (30.10.2026):** Kod ve bağımlılıksız demo hazır. Gerçek Chromium davranış testi: 8/8 karar yolu ve 2 ek kontrol **geçti**. Kural tabanlı tutor: 20/20 senaryoda tanımlı cevap sızdırma kalıbı görülmedi. **Cypress çalıştırılması / Google Stitch projesi / Google AI Studio yayını henüz doğrulanmadı.** Bu ayrım teslim kanıtları için önemlidir.
+
+## Hızlı çalıştırma
+
+Node veya npm **gerekmez**. `index.html` ES modules kullandığı için yerel HTTP sunucu üzerinden açın:
+
 ```bash
-npm install
-npm run dev
+python3 -m http.server 5173
 ```
-Tarayıcı: http://localhost:5173
 
-## Test
-Bir terminalde `npm run dev`, diğerinde `npm run test:e2e`. Cypress sekiz A/B karar yolunun tamamını, yeniden başlatmayı, kişiselleştirmeyi ve uzman sayacını sınar. Testler hazırlanmıştır; bu paketin oluşturulması testlerin çalıştırıldığı anlamına gelmez.
+Tarayıcı: http://localhost:5173 (telefon ile aynı ağda makinenin IP'si üzerinden açılabilir; ağ kuralları geçerli). `index.html` dosyasını doğrudan `file://` ile açmak ES module kısıtlarına takılabilir.
 
-## Ürün kararı: yapmadığımız üç özellik
-1. Kullanıcı hesabı eklemedik, çünkü tek oturumluk öğrenme akışında kayıt zorunluluğu gereksiz sürtünme yaratır.
-2. İkinci senaryo eklemedik, çünkü üç kararın tüm dallarını test etmek önceliklidir.
-3. Gerçek hasta verisi kullanmadık, çünkü öğretim hedefi sentetik vaka ile karşılanabilir ve mahremiyet riski yaratılmamalıdır.
+## Değerlendirme / test komutları
 
-## Önemli teslim notları
-- **AI tutor:** Canlı LLM entegrasyonu değil, cevap vermeyen deterministik Sokratik soru sistemi; 20 örnek için `docs/tutor-eval.md` bulunur. Gerçek model değerlendirmesi olarak sunulmamalıdır.
-- **Google Stitch:** `DESIGN.md` tasarım belgesi ve aktarım promptu içerir; Stitch proje bağlantısı henüz yoktur.
-- **Google AI Studio:** Proje yerel Vite/React uygulamasıdır; AI Studio üzerinde yayımlanmış bağlantı henüz yoktur.
-- **Cypress video:** Test yapılandırmasında video açıktır; `npm run test:e2e` sonrasında Cypress video üretir. 60 saniyelik demo ayrıca kaydedilmelidir.
+```bash
+node tests/tutor-eval.mjs  # 20 gerçek kural tabanlı tutor yanıtını ve oranı üretir
+npm install                # yalnızca Cypress testleri için, ağ bağlantısı gerekir
+npm run test:e2e           # başka terminalde sunucu açıkken
+```
+
+Cypress testleri `cypress/e2e/primer.cy.js` dosyasında 8 karar yolunu ve kritik davranışları kapsar. `cypress.config.js` test videosunu açar. CI iş akışı `.github/workflows/ci.yml` içindedir. **Cypress geçti iddiası ancak CI çıktısı veya yerel test koşusu alındıktan sonra kurulabilir.**
+
+## Kanıtlar
+
+- Spesifikasyon, kapsam, 5 kabul örneği ve akış: [`spec.md`](spec.md)
+- Üç mobil ekran, tasarım ilkeleri ve Stitch aktarım promptu: [`DESIGN.md`](DESIGN.md), [`docs/STITCH_BRIEF.md`](docs/STITCH_BRIEF.md)
+- Tutor 20 gerçek çıktı, hata sınıfları, oran: [`docs/tutor-eval.md`](docs/tutor-eval.md)
+- Gerçek tarayıcı kontrol senaryoları: [`tests_browser.py`](tests_browser.py), [`evidence/browser-checks.json`](evidence/browser-checks.json)
+- Üç mobil ekran görüntüsü: [`design/01-intro.jpg`](design/01-intro.jpg), [`design/02-scene.jpg`](design/02-scene.jpg), [`design/03-ending.jpg`](design/03-ending.jpg)
+- Google AI Studio'ya aktarım açıklaması: [`docs/AI_STUDIO_BRIEF.md`](docs/AI_STUDIO_BRIEF.md)
+- 60 saniyelik oynanış video dosyası: teslim ZIP'i içinde `SE_Primer_60s_Demo.mp4` olarak ayrıca verilir. Bu **Cypress koşusu kaydı değil**, gerçek tarayıcı ekranlarından oluşturulan açıklamalı ürün demosudur.
+
+## Ürün kararı: kapsam dışı üç özellik
+
+1. **Kullanıcı hesabı eklemedik**, çünkü tek oturumluk öğrenme akışında gereksiz kayıt zorunluluğu sürtünme yaratır.
+2. **İkinci senaryo eklemedik**, çünkü mevcut sağlık vakasının sekiz karar yolunun tamamını test etmek önceliklidir.
+3. **Gerçek hasta verisi kullanmadık**, çünkü sentetik vaka eğitim hedefini sağlar ve kişisel veri riskini doğurmaz.
+
+## Teknik tasarım
+
+- `src/main.js`: vanilla JavaScript, ES modules, DOM tabanlı durum makinesi ve sayaç.
+- `src/tutor.mjs`: çevrimdışı deterministik sorular, kullanıcı metni sunucuya gönderilmez.
+- `src/style.css`: 390px mobil öncelikli CSS, rol ve hedefe duyarlı sahne.
+- `tests/tutor-eval.mjs`: 20 senaryonun yeniden üretilebilir kontrolü.
+
+### Yapılmadı (dürüst teslim sınırı)
+
+- **Üretken AI tutor:** Mevcut tutor bir LLM değil. Google AI Studio/Gemini entegrasyonu ve orada yayımlama yapılmadı.
+- **Google Stitch:** Üç mobil ekran tarayıcıdan görselleştirildi; Stitch üzerinde bağımsız proje oluşturulmadı.
+- **Cypress yürütme kanıtı:** Cypress test dosyaları hazır ama bu ortamda Cypress binary'si yüklenemedi. Gerçek tarayıcı davranışlarını Chromium + Playwright ile kontrol ettik.
 
 ## Teslim bağlantıları
-GitHub kaynak dalı: https://github.com/Mervebeyazal/mini_recipe/tree/se-primer-yzm301
-AI Studio uygulaması: yayınlanmadı.
-Demo videosu: kaydedilmedi/yayınlanmadı.
 
-## Kaynaklar
-Ders ödevi: SE Primer — YZM301 (2026); Cypress dokümantasyonu (docs.cypress.io); 6698 sayılı KVKK (kvkk.gov.tr).
+- GitHub kaynak: `https://github.com/Mervebeyazal/mini_recipe/tree/se-primer-yzm301` (ayrı bir `se-primer` deposu için GitHub'da yeni repo açılmalıdır; mevcut entegrasyonda repo oluşturma yetkisi yok).
+- Google AI Studio: **Henüz yayımlanmadı**.
+- Demo video: ZIP içinde, dış bağlantı **henüz yayımlanmadı**.
+
+### Referanslar
+
+Ders PDF'i: *SE Primer — YZM301*, 2026. Cypress docs: https://docs.cypress.io. Kişisel Verilerin Korunması Kanunu: https://www.kvkk.gov.tr.

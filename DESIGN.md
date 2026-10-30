@@ -1,14 +1,35 @@
-# SE Primer — Tasarım Kararları
+# SE Primer — Mobil Arayüz Tasarım Belgesi
 
-## Ekranlar
-1. **Giriş:** Kriz anlatısı, seviye/rol/hedef seçimi, başlat düğmesi.
-2. **Sahne:** İlerleme göstergesi, kriz metni, iki seçim, tutor alanı, karar sonrası teknik geri bildirim.
-3. **Son:** Güvenli/riskli sonuç, karar günlüğü, yeniden oynama.
+## Tasarım amacı
 
-## Görsel dil
-Koyu lacivert arka plan (#080e1b), açık yeşil aksan (#d5fa91), yumuşak köşeli kartlar, okunaklı DM Sans ve Space Grotesk, 390px mobil öncelikli düzen. Odak: tek elle kullanım, yüksek kontrast ve seçimlerin açık etiketlenmesi.
+390 px mobil ekranı öncelik alan bir eğitim uygulaması. Kullanıcı bir mühendislik krizinde yön bulur, karar verir, seçimin nedenini ve sonucunu görür. Tasarım büyük tekil çağrılar, kısa metin blokları ve belirgin ilerleme çubuğu kullanır.
 
-## Stitch aktarım promptu
-"Design three mobile-first screens for SE Primer, a Turkish interactive software engineering crisis simulation: onboarding with level/role/goal selectors; a hospital outage decision scene with two choice cards and a Socratic tutor panel; an outcome screen with decision log. Dark navy editorial UI, lime accents, accessible contrast, calm technical aesthetic, 390px mobile viewport."
+## Üç ekran ve kanıt
 
-**Not:** Bu belge uygulanan tasarımın kaydıdır; Google Stitch üzerinde üretilmiş ekran bağlantısı değildir.
+| Ekran | Görsel | İşlev |
+|---|---|---|
+| 1. Giriş | `design/01-intro.jpg` | Senaryo + seviye, rol, hedef + başlat |
+| 2. Sahne | `design/02-scene.jpg` | İlerleme, iki seçenek, tutor sorusu, ipucu ve teknik geri bildirim |
+| 3. Son | `design/03-ending.jpg` | İyi/kötü son, 3 adımlı karar günlüğü, yeniden oyna |
+
+> Görseller uygulamanın gerçek Chromium ekran görüntüleridir. **Google Stitch tarafından üretildiği iddia edilmez.** Stitch'e yeniden çizim için `docs/STITCH_BRIEF.md` kullanılabilir.
+
+## Görsel sistem
+
+- Arka plan: `#080e1b`; kart: `#131f31`; ikinci yüzey: `#19283a`
+- Birincil aksan: `#d5fa91`; ikincil: `#a9f1d6`; gövde metni: `#a9b8cb`
+- Tipografi: DM Sans, Space Grotesk (erişilemezse sistem sans)
+- Ana kart: `23px` radius, seçenek: `12px` radius; buton yüksekliği dokunmaya uygundur
+- Arayüzde ilerleme çubuğu, klavye `focus-visible` ve azaltılmış hareket tercihi desteklenir
+
+## Etkileşim ve kişiselleştirme
+
+- **Yeni başlayan:** ipucunu otomatik gösterir.
+- **Deneyimli:** karar başına 60 saniye sayacı; süre dolduğunda B seçimi uygulanır, neden açıklanır.
+- **Rol:** anlatı girişinde yazılım geliştirici / test mühendisi / teknik lider kullanılır.
+- **Hedef:** karar ekranında test, güvenlik veya mimari odağı gösterilir.
+- **Tutor:** serbest kullanıcı metnine önceden tanımlı, Sokratik bir soru üretir; kişisel veriler sunucuya gitmez.
+
+## Stitch teslim sınırı
+
+Stitch bağlantısı oluşturulamadığı için bu belge ve üç tasarım görseli tam bir Stitch proje kanıtının yerine **geçmez**. İlgili yönergeler `docs/STITCH_BRIEF.md` içindedir.
