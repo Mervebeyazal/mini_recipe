@@ -1,29 +1,33 @@
-# mini-recipe
+# SE Primer — YZM301
 
-mini-recipe is a simple command-line recipe manager application. It allows users to store and manage recipes in a text-based format.
+Mobil öncelikli, üç karar aşamalı yazılım mühendisliği kriz simülasyonu.
 
-## Features
+## Kurulum
+Node.js 18+ gerekir.
+```bash
+npm install
+npm run dev
+```
+Tarayıcı: http://localhost:5173
 
-- Initialize the project directory  
-- Add new recipes  
-- List all recipes  
-- Search recipes by ingredient  
-- Calculate portion scaling  
+## Test
+Bir terminalde `npm run dev`, diğerinde `npm run test:e2e`. Cypress sekiz A/B karar yolunun tamamını, yeniden başlatmayı, kişiselleştirmeyi ve uzman sayacını sınar. Testler hazırlanmıştır; bu paketin oluşturulması testlerin çalıştırıldığı anlamına gelmez.
 
-## V1 Task List
+## Ürün kararı: yapmadığımız üç özellik
+1. Kullanıcı hesabı eklemedik, çünkü tek oturumluk öğrenme akışında kayıt zorunluluğu gereksiz sürtünme yaratır.
+2. İkinci senaryo eklemedik, çünkü üç kararın tüm dallarını test etmek önceliklidir.
+3. Gerçek hasta verisi kullanmadık, çünkü öğretim hedefi sentetik vaka ile karşılanabilir ve mahremiyet riski yaratılmamalıdır.
 
-1. Implement the list command to display all saved recipes  
-2. Implement the search command to find recipes by ingredient  
-3. Implement the portion command to calculate recipe scaling  
+## Önemli teslim notları
+- **AI tutor:** Canlı LLM entegrasyonu değil, cevap vermeyen deterministik Sokratik soru sistemi; 20 örnek için `docs/tutor-eval.md` bulunur. Gerçek model değerlendirmesi olarak sunulmamalıdır.
+- **Google Stitch:** `DESIGN.md` tasarım belgesi ve aktarım promptu içerir; Stitch proje bağlantısı henüz yoktur.
+- **Google AI Studio:** Proje yerel Vite/React uygulamasıdır; AI Studio üzerinde yayımlanmış bağlantı henüz yoktur.
+- **Cypress video:** Test yapılandırmasında video açıktır; `npm run test:e2e` sonrasında Cypress video üretir. 60 saniyelik demo ayrıca kaydedilmelidir.
 
-## V0 to V1 Update
+## Teslim bağlantıları
+GitHub kaynak dalı: https://github.com/Mervebeyazal/mini_recipe/tree/se-primer-yzm301
+AI Studio uygulaması: yayınlanmadı.
+Demo videosu: kaydedilmedi/yayınlanmadı.
 
-In V0, only the `init` and `add` commands were implemented.  
-
-In V1, the missing `list`, `search`, and `portion` commands were added. These changes made the application more functional and aligned with the original SPEC.  
-
-The project can now display recipes, search by ingredient, and calculate portion scaling for different serving sizes.
-
-## Author
-
-Merve Zeynep Beyazal
+## Kaynaklar
+Ders ödevi: SE Primer — YZM301 (2026); Cypress dokümantasyonu (docs.cypress.io); 6698 sayılı KVKK (kvkk.gov.tr).
