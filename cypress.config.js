@@ -4,5 +4,5 @@ export default defineConfig({
   viewportHeight: 844,
   video: true,
   screenshotOnRunFailure: true,
-  e2e: { baseUrl: 'http://localhost:5173', defaultCommandTimeout: 10000 }
+  e2e: { baseUrl: 'http://127.0.0.1:5173', defaultCommandTimeout: 10000 }
 });
