@@ -18,11 +18,11 @@ jobs:
       - name: Install test dependencies
         run: npm install --no-audit --no-fund
       - name: Cypress E2E
-        uses: cypress-io/github-action@v6
-        with:
-          install: false
-          start: python3 -m http.server 5173
-          wait-on: 'http://localhost:5173'
+        run: |
+          python3 -m http.server 5173 --bind 127.0.0.1 > /tmp/se-primer-http.log 2>&1 &
+          sleep 2
+          curl -fsS http://127.0.0.1:5173/ > /dev/null
+          npx cypress run
       - name: Upload Cypress videos/screenshots
         if: always()
         uses: actions/upload-artifact@v4
